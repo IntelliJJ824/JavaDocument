@@ -4,30 +4,50 @@ import java.io.IOException;
  * This method is to run the program and process the data.
  */
 public class W09Practical {
-    public static void main(String[] args) throws IOException {
-        if (args.length == 6) {
+    public static void main(String[] args) throws Exception {
+//        if (args.length == 6) {
+            boolean runner = true;
             String search = "", query = "", cache = "";
             for (int i = 0; i < args.length; i = i + 2) {
                 switch (args[i]) {
                     case ("--search"):
-                        search = args[i + 1];
+                        try {
+                            search = args[i + 1];
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            System.out.println("Missing value for --search");
+                            runner = false;
+                        }
                         break;
 
                     case ("--query"):
-                        query = args[i + 1];
+                        try {
+                            query = args[i + 1];
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            System.out.println("Missing value for --query");
+                            runner = false;
+                        }
                         break;
 
                     case ("--cache"):
-                        cache = args[i + 1];
+                        try {
+                            cache = args[i + 1];
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            System.out.println("Missing value for --cache");
+                            runner = false;
+                        }
                         break;
                     default:
-                        throw new IOException("Input error");
+                        System.out.println("Invalid value for --search: " + args[i]);
+                        runner = false;
+                        break;
                 }
             }
-            inputProcess input = new inputProcess(search, query, cache);
-//            input.printDetails();
-        } else {
-            System.out.println("Usage: java W09Practical --cache <The Path> --search <Type> --query <Words>");
-        }
+
+            if (runner) {
+                inputProcess input = new inputProcess(search, query, cache);
+            } else {
+                System.out.println("Malformed command line arguments.");
+            }
+
     }
 }
