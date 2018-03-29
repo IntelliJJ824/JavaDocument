@@ -1,53 +1,56 @@
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * This method is to run the program and process the data.
  */
 public class W09Practical {
     public static void main(String[] args) throws Exception {
-//        if (args.length == 6) {
             boolean runner = true;
             String search = "", query = "", cache = "";
-            for (int i = 0; i < args.length; i = i + 2) {
-                switch (args[i]) {
-                    case ("--search"):
-                        try {
+            for (int i = 0; i < args.length; i++) {
+                try {
+                    switch (args[i]) {
+                        case ("--search"):
                             search = args[i + 1];
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            System.out.println("Missing value for --search");
-                            runner = false;
-                        }
-                        break;
+                            break;
 
-                    case ("--query"):
-                        try {
+                        case ("--query"):
                             query = args[i + 1];
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            System.out.println("Missing value for --query");
-                            runner = false;
-                        }
-                        break;
+                            break;
 
-                    case ("--cache"):
-                        try {
+                        case ("--cache"):
                             cache = args[i + 1];
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            System.out.println("Missing value for --cache");
-                            runner = false;
-                        }
-                        break;
-                    default:
-                        System.out.println("Invalid value for --search: " + args[i]);
+                            break;
+                        default:
+                            break;
+                    }
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("Missing value for " + args[i]);
                         runner = false;
-                        break;
                 }
             }
 
+            //This is to make a judgement whether the search value is valid.
+            if (!(search.equals("author") || search.equals("publication") || search.equals("venue")) && runner) {
+                System.out.println("Invalid value for --search: " + search);
+                runner = false;
+            }
+
+            //If the input format is correct.
             if (runner) {
-                inputProcess input = new inputProcess(search, query, cache);
+                //This is to judge whether there is a directory.
+                Path path = Paths.get(cache);
+                if (Files.notExists(path)) {
+                    System.out.println("Cache directory doesn't exist: " + cache);
+                }
+                else {      //all the input is correct and directory exist, and the program runs.
+                    inputProcess input = new inputProcess(search, query, cache);
+                }
             } else {
                 System.out.println("Malformed command line arguments.");
             }
-
     }
 }

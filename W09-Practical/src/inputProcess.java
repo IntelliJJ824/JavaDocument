@@ -1,7 +1,5 @@
-import java.io.IOException;
-
 public class inputProcess {
-    String search, query, cache;
+    protected String search, query, cache;
 
     public inputProcess(String search, String query, String cache) throws Exception {
         this.search = search;
@@ -15,9 +13,11 @@ public class inputProcess {
         switch (search) {
             case "author":
                 processAuthor summaryAuthor = new processAuthor(cache, query, search);
-
                 if (!summaryAuthor.judgeTheFile()) {
-                    System.out.println("Cache directory doesn't exist: " + cache);
+                    System.out.println("Web searching author");
+                    summaryAuthor.setFileSearching();
+                    summaryAuthor.webReader();
+                    summaryAuthor.processXML();
                 } else {
                     summaryAuthor.processXML();
                 }
@@ -27,9 +27,10 @@ public class inputProcess {
             case "publication":
                 search = "publ";
                 processPublication summary = new processPublication(cache, query, search);
-
                 if (!summary.judgeTheFile()) {  //send the request to the web
-                    System.out.println("Cache directory doesn't exist: " + cache);
+                    System.out.println("Web searching for publication.");
+                    summary.webReader();
+                    summary.processXML();
                 } else {        //process the file
                     summary.processXML();
                 }
@@ -37,14 +38,16 @@ public class inputProcess {
 
             case "venue":
                 processVenue summaryVenue = new processVenue(cache, query, search);
-
                 if (!summaryVenue.judgeTheFile()) {
-                    System.out.println("Cache directory doesn't exist: " + cache);
+                    System.out.println("Web searching for venue.");
+                    summaryVenue.webReader();
+                    summaryVenue.processXML();
                 } else {
                     summaryVenue.processXML();
                 }
                 break;
-
+            default:
+                break;
         }
     }
 

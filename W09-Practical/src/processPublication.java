@@ -1,8 +1,15 @@
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
+/**
+ * This class is to process the searching type application.
+ */
 public class processPublication extends calculator {
-
+    /**
+     * This method is to receive the parameters from the user's input.
+     * @param cache the location of the file.
+     * @param query the query string that user want to loop up.
+     * @param search the type that user want to search.
+     */
     public processPublication(String cache, String query, String search) {
         super(cache, query, search);
     }
@@ -24,7 +31,6 @@ public class processPublication extends calculator {
             } catch (NullPointerException e) {
                 authorNo = 0;
             }
-
             printOutPublication(title, authorNo);
         }
     }
